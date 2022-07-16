@@ -1,3 +1,6 @@
-This is the readme for a basic todo applet.
+A simple todo applet that lets you create tasks to do and then stripe them off
 
-Not much else to say really, its that simple
+A lot of CSS, but we wont talk about that here lol
+
+It has 2 different categories, and a little easter egg in the full source code, not the deploy code
+GL finding it!
