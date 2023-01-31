@@ -1,47 +1,47 @@
 <script setup>
 
-  import { ref, onMounted, computed, watch } from 'vue';
+import { ref, onMounted, computed, watch } from 'vue';
 
-  const todos = ref([])
-  const name = ref('')
+const todos = ref([])
+const name = ref('')
 
-  const input_content = ref('')
-  const input_category = ref(null)
+const input_content = ref('')
+const input_category = ref(null)
 
-  const todos_asc = computed(() => todos.value.sort((a, b) => {
-    return b.createdAt - a.createdAt
-  }));
+const todos_asc = computed(() => todos.value.sort((a, b) => {
+  return b.createdAt - a.createdAt
+}));
 
-  const removeTodo = (todo) => {
-    todos.value = todos.value.filter(t => t !== todo)
+const removeTodo = (todo) => {
+  todos.value = todos.value.filter(t => t !== todo)
+}
+
+const addTodo = () => {
+  if (input_content.value.trim() === '' || input_category.value === null) {
+    return
   }
 
-  const addTodo = () => {
-    if(input_content.value.trim() === '' || input_category.value === null) {
-      return
-    }
+  todos.value.push({
+    content: input_content.value,
+    category: input_category.value,
+    done: false,
+    createdAt: new Date().getTime()
+  })
+}
 
-    todos.value.push({
-      content: input_content.value,
-      category: input_category.value,
-      done: false,
-      createdAt: new Date().getTime()
-    })
-  }
+watch(todos, newValue => {
+  localStorage.setItem('todos', JSON.stringify(newValue))
+}, { deep: true })
 
-  watch(todos, newValue => {
-    localStorage.setItem('todos', JSON.stringify(newValue))
-  }, { deep: true })
-  
-  watch(name, (newVal) => {
-    localStorage.setItem('name', newVal)
-  });
-  
+watch(name, (newVal) => {
+  localStorage.setItem('name', newVal)
+});
 
-  onMounted(() => {
-    name.value = localStorage.getItem('name') || ''
-    todos.value = JSON.parse(localStorage.getItem('todos')) || []
-  });
+
+onMounted(() => {
+  name.value = localStorage.getItem('name') || ''
+  todos.value = JSON.parse(localStorage.getItem('todos')) || []
+});
 
 </script>
 
@@ -62,38 +62,25 @@
 
       <form @submit.prevent="addTodo">
         <h4>What's on your todo list?</h4>
-        <input 
-          type="text" 
-          placeholder="e.g make a YouTube video" 
-          v-model="input_content" />
+        <input type="text" placeholder="e.g make a YouTube video" v-model="input_content" />
 
         <h4>Pick a category</h4>
         <div class="options">
           <label>
-            <input 
-              type="radio" 
-              name="category" 
-              id="category1"
-              value="business"
-              v-model="input_category" />
+            <input type="radio" name="category" id="category1" value="business" v-model="input_category" />
             <span class="bubble business">
 
             </span>
             <div>Business</div>
-            
+
           </label>
           <label>
-            <input 
-              type="radio" 
-              name="category" 
-              id="category2"
-              value="personal" 
-              v-model="input_category" />
+            <input type="radio" name="category" id="category2" value="personal" v-model="input_category" />
             <span class="bubble personal">
-            
+
             </span>
             <div>Personal</div>
-            
+
           </label>
           <!-- 
           <h1>This is a legacy category, congrats on digging through the code and finding it!</h1>
@@ -127,7 +114,7 @@
             <span :class="`bubble ${todo.category}`"></span>
           </label>
           <div class="todo-content">
-            <input type="text" v-model="todo.content" />
+            <input type="text" style="width: 100%;" v-model="todo.content" />
           </div>
 
           <div class="actions">
@@ -136,7 +123,7 @@
         </div>
       </div>
     </section>
-    
+
   </main>
 
 </template>
